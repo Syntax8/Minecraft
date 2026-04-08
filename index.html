@@ -2,46 +2,113 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Świat Minecrafta - Syntax8</title>
+    <title>Klan Minecraft</title>
     <style>
         body {
-            background-color: #1e1e1e;
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center;
-            padding: 50px;
+            background-color: #f0f0f0; /* Jasne tło jak na rysunku */
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden; /* Żeby bloczki nie uciekały poza ekran */
+            margin: 0;
+            height: 100vh;
         }
-        .container {
-            background-color: #3c3c3c;
-            border: 4px solid #555;
-            padding: 20px;
-            border-radius: 10px;
-            display: inline-block;
+
+        #napis-klan {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 80px;
+            color: #2e7d32;
+            font-weight: bold;
         }
-        h1 {
-            color: #55FF55; /* Minecraftowy jasnozielony */
-            text-shadow: 2px 2px #000;
+
+        #czlonkowie {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            text-align: left;
+            color: #8b4513;
+            font-size: 24px;
         }
-        .btn {
-            background-color: #555;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border: 2px solid #000;
-            display: inline-block;
-            margin-top: 20px;
+
+        /* Styl dla małego bloczka w rogu */
+        #przycisk-blok {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #5d4037;
+            border: 4px solid #3e2723;
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 3px 3px 0px #000;
         }
-        .btn:hover {
-            background-color: #3FB33F;
+        
+        #przycisk-blok::after {
+            content: "🌱"; /* Taka mini-trawa na bloczku */
+            font-size: 25px;
+        }
+
+        /* Styl dla latających bloczków */
+        .latajacy-blok {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #8d6e63;
+            border: 3px solid #5d4037;
+            border-top: 10px solid #4caf50; /* Zielona góra */
+            transition: opacity 0.3s ease;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Mój Świat Minecraft</h1>
-        <p>Witaj na mojej stronie! Będę tu wrzucać info o moich budowlach i serwerach.</p>
-        <div style="font-size: 50px;">⛏️</div>
-        <a href="#" class="btn">Zobacz Galerię</a>
+
+    <div id="napis-klan">KLAN</div>
+
+    <div id="czlonkowie">
+        <h2 style="margin-bottom: 5px;">CZŁONKOWIE</h2>
+        <ul style="list-style-type: '- '; padding-left: 10px; margin-top: 0;">
+            <li>Blondi_Pl</li>
+            <li>0skar3377</li>
+            <li>Dorianek558</li>
+        </ul>
     </div>
+
+    <div id="przycisk-blok" onclick="toggleBlocks()"></div>
+
+    <div id="container-bloczkow"></div>
+
+    <script>
+        const container = document.getElementById('container-bloczkow');
+        let widoczne = true;
+
+        // Funkcja tworząca losowe bloczki
+        function stworzBloczki() {
+            for (let i = 0; i < 10; i++) {
+                const blok = document.createElement('div');
+                blok.className = 'latajacy-blok';
+                // Losowe pozycje
+                blok.style.left = Math.random() * 80 + 10 + "%";
+                blok.style.top = Math.random() * 60 + 20 + "%";
+                // Losowy obrót, żeby wyglądały jak rozsypane
+                blok.style.transform = `rotate(${Math.random() * 360}deg)`;
+                container.appendChild(blok);
+            }
+        }
+
+        // Funkcja pokazująca/chowająca bloczki
+        function toggleBlocks() {
+            widoczne = !widoczne;
+            container.style.opacity = widoczne ? "1" : "0";
+        }
+
+        // Uruchomienie przy starcie
+        stworzBloczki();
+    </script>
+
 </body>
 </html>
