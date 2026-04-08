@@ -76,18 +76,22 @@
             content: "🌱"; /* Taka mini-trawa, żeby wyglądał bardziej minecraftowo niż tylko biały kwadrat */
         }
 
-        /* PO 1: Styl dla latających bloczków */
+ /* PO 1: Styl dla NOWYCH, minecraftowych bloczków */
         .latajacy-blok {
             position: absolute;
-            width: 50px;
+            width: 50px; /* Rozmiar bloczka */
             height: 50px;
-            background-color: #8d6e63; /* Brązowy ziemi */
-            border: 3px solid #5d4037;
-            border-top: 12px solid #4caf50; /* Zielona góra trawy */
-            opacity: 0.8;
+            
+            /* Używamy wgranego obrazka jako tła */
+            background-image: url('blok.png');
+            background-size: cover; /* Obrazek wypełnia cały kwadrat */
+            
+            opacity: 0.9; /* Trochę mniej przezroczyste, żeby były wyraźniejsze */
             transition: opacity 0.3s ease;
-            pointer-events: none; /* Żeby nie zasłaniały kliknięć na stronie */
-            box-shadow: 2px 2px 0px #000;
+            pointer-events: none;
+            
+            /* Dodajemy cień, żeby wyglądały bardziej 3D na płaskim tle */
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.5); 
         }
     </style>
 </head>
