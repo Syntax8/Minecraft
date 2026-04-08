@@ -4,15 +4,12 @@
     <meta charset="UTF-8">
     <title>Klan Minecraft - Syntax8</title>
     <style>
-        /* PO 2: Fajne tło (ciemne, z delikatnym wzorem) */
         body {
-            background-color: #1e1e1e;
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5QgKAhwN4kP0GAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmXRbwAAADxJREFUOMtjvHTpEgMRgIHKgA4OjqKioqSkhIGBgaGhoampKTo6OjIykpCQEBERwcbGxsbGxsbGxsYGAAH8EskS/9B0AAAAAElFTkSuQmCC'); /* Dodałem delikatny wzór, żeby nie było tylko czarne */
+            background-color: #1a1a1a;
             color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
-            padding: 0;
-            overflow: hidden; /* Żeby bloczki nie robiły pasków przewijania */
+            overflow: hidden;
             height: 100vh;
         }
 
@@ -22,76 +19,51 @@
             left: 50%;
             transform: translateX(-50%);
             font-size: 80px;
-            color: #55FF55; /* Minecraftowy jasnozielony */
+            color: #55FF55;
             font-weight: bold;
             text-shadow: 4px 4px 0px #000;
+            z-index: 10;
         }
 
         #czlonkowie {
             position: absolute;
             top: 20px;
             left: 20px;
-            text-align: left;
-            z-index: 50;
+            z-index: 10;
         }
 
-        #czlonkowie h2 {
-            margin-bottom: 5px;
-            color: #FF5555; /* Minecraftowy czerwonawy */
-            text-shadow: 2px 2px 0px #000;
-        }
+        #czlonkowie h2 { color: #FF5555; text-shadow: 2px 2px #000; margin-bottom: 5px; }
+        #czlonkowie ul { list-style: none; padding: 0; font-weight: bold; text-shadow: 2px 2px #000; }
+        .n1 { color: #55FFFF; } /* Blondi_Pl */
+        .n2 { color: #FFFF55; } /* 0skar3377 */
+        .n3 { color: #FF55FF; } /* Dorianek558 */
 
-        #czlonkowie ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            font-size: 20px;
-            font-weight: bold;
-            text-shadow: 2px 2px 0px #000;
-        }
-
-        #czlonkowie ul li:nth-child(1) { color: #55FFFF; } /* Blondi_Pl - błękitny */
-        #czlonkowie ul li:nth-child(2) { color: #FFFF55; } /* 0skar3377 - żółty */
-        #czlonkowie ul li:nth-child(3) { color: #FF55FF; } /* Dorianek558 - jasnofioletowy */
-
-        /* PO 3: Styl dla małego bloczka-przycisku w lewym dolnym rogu */
         #przycisk-blok {
             position: absolute;
             bottom: 20px;
             left: 20px;
             width: 60px;
             height: 60px;
-            background-color: #5d4037; /* Brązowy */
-            border: 5px solid #3e2723; /* Ciemnobrązowa ramka */
+            background: #5d4037;
+            border: 4px solid #3e2723;
             cursor: pointer;
             z-index: 100;
-            box-shadow: 4px 4px 0px #000;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 30px;
-        }
-        
-        #przycisk-blok::after {
-            content: "🌱"; /* Taka mini-trawa, żeby wyglądał bardziej minecraftowo niż tylko biały kwadrat */
+            box-shadow: 4px 4px 0px #000;
         }
 
- /* PO 1: Styl dla NOWYCH, minecraftowych bloczków */
         .latajacy-blok {
             position: absolute;
-            width: 50px; /* Rozmiar bloczka */
-            height: 50px;
-            
-            /* Używamy wgranego obrazka jako tła */
-            background-image: url('blok.png');
-            background-size: cover; /* Obrazek wypełnia cały kwadrat */
-            
-            opacity: 0.9; /* Trochę mniej przezroczyste, żeby były wyraźniejsze */
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            
-            /* Dodajemy cień, żeby wyglądały bardziej 3D na płaskim tle */
-            box-shadow: 4px 4px 0px rgba(0,0,0,0.5); 
+            width: 45px;
+            height: 45px;
+            background-color: #795548; /* Brązowa ziemia */
+            border-top: 15px solid #4caf50; /* Zielona trawa */
+            box-sizing: border-box;
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+            transition: opacity 0.3s;
         }
     </style>
 </head>
@@ -102,14 +74,13 @@
     <div id="czlonkowie">
         <h2>CZŁONKOWIE</h2>
         <ul>
-            <li>Blondi_Pl</li>
-            <li>0skar3377</li>
-            <li>Dorianek558</li>
+            <li class="n1">Blondi_Pl</li>
+            <li class="n2">0skar3377</li>
+            <li class="n3">Dorianek558</li>
         </ul>
     </div>
 
-    <div id="przycisk-blok" onclick="toggleBlocks()"></div>
-
+    <div id="przycisk-blok" onclick="toggleBlocks()">🌱</div>
     <div id="container-bloczkow"></div>
 
     <script>
@@ -117,59 +88,37 @@
         const bloczki = [];
         let widoczne = true;
 
-        // PO 1: Funkcja tworząca losowe bloczki i dodająca im prędkość
-        function stworzBloczki() {
-            // Tworzymy 15 bloczków
+        function stworz() {
             for (let i = 0; i < 15; i++) {
-                const blok = document.createElement('div');
-                blok.className = 'latajacy-blok';
-                // Losowe pozycje startowe w procentach ekranu
-                let x = Math.random() * 80 + 10;
-                let y = Math.random() * 60 + 20;
-                blok.style.left = x + "%";
-                blok.style.top = y + "%";
-                
-                // Dodajemy dane o prędkości (w procentach ekranu na klatkę)
-                // Wartości są bardzo małe, żeby bloczki poruszały się POWOLI
-                const vx = (Math.random() - 0.5) * 0.05; 
-                const vy = (Math.random() - 0.5) * 0.05;
-                
-                container.appendChild(blok);
-                // Zapisujemy informacje o bloczku, żeby móc go animować
-                bloczki.push({ element: blok, x: x, y: y, vx: vx, vy: vy });
+                const el = document.createElement('div');
+                el.className = 'latajacy-blok';
+                let x = Math.random() * 90;
+                let y = Math.random() * 80 + 10;
+                let vx = (Math.random() - 0.5) * 0.4;
+                let vy = (Math.random() - 0.5) * 0.4;
+                container.appendChild(el);
+                bloczki.push({el, x, y, vx, vy});
             }
         }
 
-        // PO 1: Funkcja animująca bloczki (powolny dryf i odbijanie)
-        function animujBloczki() {
-            bloczki.forEach(blokInfo => {
-                // Aktualizujemy pozycję na podstawie prędkości
-                blokInfo.x += blokInfo.vx;
-                blokInfo.y += blokInfo.vy;
-
-                // Odbijanie od krawędzi ekranu
-                if (blokInfo.x < 0 || blokInfo.x > 95) blokInfo.vx *= -1;
-                if (blokInfo.y < 0 || blokInfo.y > 95) blokInfo.vy *= -1;
-
-                // Aplikujemy nową pozycję do elementu HTML
-                blokInfo.element.style.left = blokInfo.x + "%";
-                blokInfo.element.style.top = blokInfo.y + "%";
+        function animuj() {
+            bloczki.forEach(b => {
+                b.x += b.vx; b.y += b.vy;
+                if(b.x < 0 || b.x > 95) b.vx *= -1;
+                if(b.y < 0 || b.y > 95) b.vy *= -1;
+                b.el.style.left = b.x + "%";
+                b.el.style.top = b.y + "%";
             });
-            // Pętla animacji - wywołuje tę funkcję w kółko
-            requestAnimationFrame(animujBloczki);
+            requestAnimationFrame(animuj);
         }
 
-        // Funkcja pokazująca/chowająca bloczki po kliknięciu
         function toggleBlocks() {
             widoczne = !widoczne;
-            // Zmieniamy przezroczystość całego kontenera z bloczkami
             container.style.opacity = widoczne ? "1" : "0";
         }
 
-        // Uruchomienie wszystkiego przy starcie strony
-        stworzBloczki();
-        animujBloczki();
+        stworz();
+        animuj();
     </script>
-
 </body>
 </html>
