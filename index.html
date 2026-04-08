@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <title>Klan Minecraft - Syntax8</title>
     <style>
+        /* PO 2: Fajne tło (ciemne, z delikatnym wzorem) */
         body {
-            /* PUNKTY 3 i 5: Inne tło (ciemne, minecraftowe) i obrazek przycisku */
             background-color: #1e1e1e;
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5QgKAhwN4kP0GAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmXRbwAAADxJREFUOMtjvHTpEgMRgIHKgA4OjqKioqSkhIGBgaGhoampKTo6OjIykpCQEBERwcbGxsbGxsbGxsYGAAH8EskS/9B0AAAAAElFTkSuQmCC'); /* Delikatny deseń */
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5QgKAhwN4kP0GAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmXRbwAAADxJREFUOMtjvHTpEgMRgIHKgA4OjqKioqSkhIGBgaGhoampKTo6OjIykpCQEBERwcbGxsbGxsbGxsYGAAH8EskS/9B0AAAAAElFTkSuQmCC'); /* Dodałem delikatny wzór, żeby nie było tylko czarne */
             color: white;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Bloczek w rogu i dryfujące bloczki nie robią pasków przewijania */
+            overflow: hidden; /* Żeby bloczki nie robiły pasków przewijania */
             height: 100vh;
         }
 
@@ -27,7 +27,6 @@
             text-shadow: 4px 4px 0px #000;
         }
 
-        /* PUNKT 1: Członkowie w lewym górnym rogu */
         #czlonkowie {
             position: absolute;
             top: 20px;
@@ -36,14 +35,12 @@
             z-index: 50;
         }
 
-        /* PUNKT 4: Kolorowy napis CZŁONKOWIE */
         #czlonkowie h2 {
             margin-bottom: 5px;
             color: #FF5555; /* Minecraftowy czerwonawy */
             text-shadow: 2px 2px 0px #000;
         }
 
-        /* PUNKT 4: Kolorowe nazwy członków */
         #czlonkowie ul {
             list-style-type: none;
             padding: 0;
@@ -57,33 +54,40 @@
         #czlonkowie ul li:nth-child(2) { color: #FFFF55; } /* 0skar3377 - żółty */
         #czlonkowie ul li:nth-child(3) { color: #FF55FF; } /* Dorianek558 - jasnofioletowy */
 
-        /* Styl dla małego bloczka-przycisku w rogu */
+        /* PO 3: Styl dla małego bloczka-przycisku w lewym dolnym rogu */
         #przycisk-blok {
             position: absolute;
             bottom: 20px;
             left: 20px;
-            width: 50px;
-            height: 50px;
-            /* PUNKT 5: Obrazek przycisku z wgranego pliku */
-            background-image: url('blok.png');
-            background-size: cover;
+            width: 60px;
+            height: 60px;
+            background-color: #5d4037; /* Brązowy */
+            border: 5px solid #3e2723; /* Ciemnobrązowa ramka */
             cursor: pointer;
             z-index: 100;
-            box-shadow: 3px 3px 0px #000;
-            border: none;
+            box-shadow: 4px 4px 0px #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+        
+        #przycisk-blok::after {
+            content: "🌱"; /* Taka mini-trawa, żeby wyglądał bardziej minecraftowo niż tylko biały kwadrat */
         }
 
-        /* PUNKT 2: Styl dla latających bloczków */
+        /* PO 1: Styl dla latających bloczków */
         .latajacy-blok {
             position: absolute;
             width: 50px;
             height: 50px;
-            /* Używamy wgranego obrazka jako tła bloczków */
-            background-image: url('blok.png');
-            background-size: cover;
+            background-color: #8d6e63; /* Brązowy ziemi */
+            border: 3px solid #5d4037;
+            border-top: 12px solid #4caf50; /* Zielona góra trawy */
             opacity: 0.8;
             transition: opacity 0.3s ease;
-            pointer-events: none; /* Żeby nie zasłaniały kliknięć */
+            pointer-events: none; /* Żeby nie zasłaniały kliknięć na stronie */
+            box-shadow: 2px 2px 0px #000;
         }
     </style>
 </head>
@@ -100,7 +104,7 @@
         </ul>
     </div>
 
-    <button id="przycisk-blok" onclick="toggleBlocks()"></button>
+    <div id="przycisk-blok" onclick="toggleBlocks()"></div>
 
     <div id="container-bloczkow"></div>
 
@@ -109,51 +113,56 @@
         const bloczki = [];
         let widoczne = true;
 
-        // PUNKT 2: Funkcja tworząca losowe bloczki i dodająca im prędkość
+        // PO 1: Funkcja tworząca losowe bloczki i dodająca im prędkość
         function stworzBloczki() {
+            // Tworzymy 15 bloczków
             for (let i = 0; i < 15; i++) {
                 const blok = document.createElement('div');
                 blok.className = 'latajacy-blok';
-                // Losowe pozycje startowe
+                // Losowe pozycje startowe w procentach ekranu
                 let x = Math.random() * 80 + 10;
                 let y = Math.random() * 60 + 20;
                 blok.style.left = x + "%";
                 blok.style.top = y + "%";
                 
                 // Dodajemy dane o prędkości (w procentach ekranu na klatkę)
-                const vx = (Math.random() - 0.5) * 0.05; // Bardzo wolno poziomo
-                const vy = (Math.random() - 0.5) * 0.05; // Bardzo wolno pionowo
+                // Wartości są bardzo małe, żeby bloczki poruszały się POWOLI
+                const vx = (Math.random() - 0.5) * 0.05; 
+                const vy = (Math.random() - 0.5) * 0.05;
                 
                 container.appendChild(blok);
+                // Zapisujemy informacje o bloczku, żeby móc go animować
                 bloczki.push({ element: blok, x: x, y: y, vx: vx, vy: vy });
             }
         }
 
-        // PUNKT 2: Funkcja animująca bloczki (powolny dryf)
+        // PO 1: Funkcja animująca bloczki (powolny dryf i odbijanie)
         function animujBloczki() {
             bloczki.forEach(blokInfo => {
-                // Aktualizujemy pozycję
+                // Aktualizujemy pozycję na podstawie prędkości
                 blokInfo.x += blokInfo.vx;
                 blokInfo.y += blokInfo.vy;
 
-                // Odbijanie od "ścian" ekranu
+                // Odbijanie od krawędzi ekranu
                 if (blokInfo.x < 0 || blokInfo.x > 95) blokInfo.vx *= -1;
                 if (blokInfo.y < 0 || blokInfo.y > 95) blokInfo.vy *= -1;
 
-                // Aplikujemy nową pozycję
+                // Aplikujemy nową pozycję do elementu HTML
                 blokInfo.element.style.left = blokInfo.x + "%";
                 blokInfo.element.style.top = blokInfo.y + "%";
             });
-            requestAnimationFrame(animujBloczki); // Pętla animacji
+            // Pętla animacji - wywołuje tę funkcję w kółko
+            requestAnimationFrame(animujBloczki);
         }
 
-        // Funkcja pokazująca/chowająca bloczki
+        // Funkcja pokazująca/chowająca bloczki po kliknięciu
         function toggleBlocks() {
             widoczne = !widoczne;
+            // Zmieniamy przezroczystość całego kontenera z bloczkami
             container.style.opacity = widoczne ? "1" : "0";
         }
 
-        // Uruchomienie przy starcie
+        // Uruchomienie wszystkiego przy starcie strony
         stworzBloczki();
         animujBloczki();
     </script>
